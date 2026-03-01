@@ -24,9 +24,9 @@
 
   --font-press: "Press Start 2P", system-ui;
 
-  --cursor-default: url('/cursors/default.svg') 4 1, auto;
-  --cursor-text: url('/cursors/text.svg') 16 16, auto;
-  --cursor-pointer: url('/cursors/pointer.svg') 13 5, auto;
+  --cursor-default: url('./assets/cursors/default.svg') 4 1, auto;
+  --cursor-text: url('./assets/cursors/text.svg') 16 16, auto;
+  --cursor-pointer: url('./assets/cursors/pointer.svg') 13 5, auto;
 }
 
 @layer base {
