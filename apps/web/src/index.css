@@ -17,6 +17,11 @@
     linear-gradient(--alpha(var(--color-black) / 20%) 2px, transparent 2px),
     linear-gradient(90deg, --alpha(var(--color-black) / 20%) 2px, transparent 2px);
   
+  --shadow-panel: 10px 10px 0px --alpha(var(--color-black) / 80%);
+  --shadow-button: 6px 6px 0px var(--color-black);
+  --shadow-button-active: 2px 2px 0px var(--color-black);
+  --text-shadow-title: 4px 4px 0px var(--color-black);
+
   --font-press: "Press Start 2P", system-ui;
 
   --cursor-default: url('/cursors/default.svg') 4 1, auto;
