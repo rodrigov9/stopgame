@@ -12,6 +12,8 @@
   "dependencies": {
     "@radix-ui/react-popover": "^1.1.15",
     "@tailwindcss/vite": "^4.2.1",
+    "@tanstack/react-router": "^1.163.3",
+    "@tanstack/react-router-devtools": "^1.163.3",
     "clsx": "^2.1.1",
     "pixelarticons": "^2.0.2",
     "react": "^19.2.0",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@stopgame/eslint-config": "workspace:*",
+    "@tanstack/router-plugin": "^1.164.0",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
