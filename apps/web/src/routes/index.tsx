@@ -27,6 +27,7 @@ function Home() {
 
           <Button type="submit" className="p-0">
             <ChevronRight2 className="size-12" />
+            <span className="sr-only">Entrar</span>
           </Button>
         </form>
       </section>

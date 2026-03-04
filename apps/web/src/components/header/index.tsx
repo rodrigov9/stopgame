@@ -10,6 +10,7 @@ export function Header() {
       <Button asChild>
         <Link to="/">
           <Home className="size-6" />
+          <span className="sr-only">Início</span>
         </Link>
       </Button>
 
