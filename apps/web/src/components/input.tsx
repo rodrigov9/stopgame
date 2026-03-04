@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react'
-import { cn } from '@/utils/cn'
+import { cn } from 'tailwind-variants'
 
 export function Input({ className, ...props }: ComponentProps<'input'>) {
   return (
