@@ -5,7 +5,7 @@ import { Input } from '@/components/input'
 import { Button } from '@/components/button'
 import { Plus } from 'pixelarticons/react'
 
-import { Category } from './category'
+import { Bullet } from '@/components/bullet'
 
 type CategoryInputProps = {
   value: string[]
@@ -60,9 +60,13 @@ export function CategoryInput({
 
       <div className="flex flex-wrap justify-center gap-2">
         {value.map((category, index) => (
-          <Category onClick={() => removeCategory(index)} key={category}>
+          <Bullet
+            render={<button />}
+            onClick={() => removeCategory(index)}
+            key={category}
+          >
             {category}
-          </Category>
+          </Bullet>
         ))}
       </div>
 

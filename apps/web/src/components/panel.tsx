@@ -9,7 +9,7 @@ export function Panel({
   return (
     <main
       className={cn(
-        'flex flex-col gap-12 border-4 border-magenta bg-black/60 p-8 shadow-panel not-sm:w-full',
+        'flex max-h-full flex-col gap-12 overflow-auto border-4 border-magenta bg-black/60 p-8 shadow-panel not-sm:w-full',
         className
       )}
       {...props}

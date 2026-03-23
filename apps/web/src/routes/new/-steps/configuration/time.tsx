@@ -1,6 +1,7 @@
 import { Activity } from 'react'
 import { withForm } from '@/hooks/form'
 import { formOpts } from '../../-form-options'
+import { formatTime } from '@/utils/format-time'
 
 import { Field } from '@base-ui/react'
 import { AlarmClock } from 'pixelarticons/react'
@@ -34,17 +35,7 @@ export const Time = withForm({
                     min={30}
                     max={5 * 60}
                     step={30}
-                    format={value => {
-                      const minutes = Math.floor(value / 60)
-                      const seconds = value % 60
-
-                      const result = []
-
-                      if (minutes > 0) result.push(`${minutes} min`)
-                      if (seconds > 0) result.push(`${seconds} s`)
-
-                      return result.join(' ')
-                    }}
+                    format={formatTime}
                   />
                 )}
               </form.AppField>

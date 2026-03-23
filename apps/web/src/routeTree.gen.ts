@@ -9,55 +9,58 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as NewIndexRouteImport } from './routes/new/index'
+import { Route as homeIndexRouteImport } from './routes/(home)/index'
+import { Route as JoinIdRouteImport } from './routes/join/$id'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const NewIndexRoute = NewIndexRouteImport.update({
   id: '/new/',
   path: '/new/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const homeIndexRoute = homeIndexRouteImport.update({
+  id: '/(home)/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JoinIdRoute = JoinIdRouteImport.update({
+  id: '/join/$id',
+  path: '/join/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/join/$id': typeof JoinIdRoute
+  '/': typeof homeIndexRoute
   '/new/': typeof NewIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/join/$id': typeof JoinIdRoute
+  '/': typeof homeIndexRoute
   '/new': typeof NewIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/join/$id': typeof JoinIdRoute
+  '/(home)/': typeof homeIndexRoute
   '/new/': typeof NewIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/new/'
+  fullPaths: '/join/$id' | '/' | '/new/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/new'
-  id: '__root__' | '/' | '/new/'
+  to: '/join/$id' | '/' | '/new'
+  id: '__root__' | '/join/$id' | '/(home)/' | '/new/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  JoinIdRoute: typeof JoinIdRoute
+  homeIndexRoute: typeof homeIndexRoute
   NewIndexRoute: typeof NewIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/new/': {
       id: '/new/'
       path: '/new'
@@ -65,11 +68,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(home)/': {
+      id: '/(home)/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof homeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/join/$id': {
+      id: '/join/$id'
+      path: '/join/$id'
+      fullPath: '/join/$id'
+      preLoaderRoute: typeof JoinIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  JoinIdRoute: JoinIdRoute,
+  homeIndexRoute: homeIndexRoute,
   NewIndexRoute: NewIndexRoute,
 }
 export const routeTree = rootRouteImport
