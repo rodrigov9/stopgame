@@ -1,6 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 
-import { Button } from '@/components/button'
+import { Panel } from '@/components/panel'
+import { Button, buttonVariants } from '@/components/button'
 import { Input } from '@/components/input'
 import { Plus, ChevronRight2 } from 'pixelarticons/react'
 
@@ -10,14 +11,10 @@ export const Route = createFileRoute('/')({
 
 function Home() {
   return (
-    <>
-      <h1 className="text-center text-5xl text-yellow text-shadow-magenta text-shadow-title">
-        STOP
-      </h1>
-
-      <Button>
+    <Panel>
+      <Link to="/new" className={buttonVariants()}>
         <Plus className="size-6" /> Criar nova sala
-      </Button>
+      </Link>
 
       <section>
         <h2 className="mb-3 text-center">Entrar com código</h2>
@@ -31,6 +28,6 @@ function Home() {
           </Button>
         </form>
       </section>
-    </>
+    </Panel>
   )
 }

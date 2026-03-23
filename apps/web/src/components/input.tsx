@@ -1,9 +1,11 @@
-import type { ComponentProps } from 'react'
+import { Input as InputPrimitive } from '@base-ui/react'
 import { cn } from 'tailwind-variants'
 
-export function Input({ className, ...props }: ComponentProps<'input'>) {
+export type InputProps = InputPrimitive.Props
+
+export function Input({ className, ...props }: InputProps) {
   return (
-    <input
+    <InputPrimitive
       className={cn(
         'w-full border-4 border-white bg-black p-2 text-sm placeholder:text-muted',
         className

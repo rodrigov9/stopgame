@@ -20,16 +20,26 @@
   --shadow-panel: 10px 10px 0px --alpha(var(--color-black) / 80%);
   --shadow-button: 6px 6px 0px var(--color-black);
   --shadow-button-active: 2px 2px 0px var(--color-black);
-  --text-shadow-title: 4px 4px 0px var(--color-black);
+  --text-shadow-title: 4px 4px 0px var(--color-magenta);
 
   --font-press: "Press Start 2P", system-ui;
 
   --cursor-default: url('./assets/cursors/default.svg') 4 1, auto;
-  --cursor-text: url('./assets/cursors/text.svg') 16 16, auto;
-  --cursor-pointer: url('./assets/cursors/pointer.svg') 13 5, auto;
+  --cursor-text: url('./assets/cursors/text.svg') 16 16, text;
+  --cursor-pointer: url('./assets/cursors/pointer.svg') 13 5, pointer;
+  --cursor-grab: url('./assets/cursors/grab.svg') 16 16, grab;
+  --cursor-grabbing: url('./assets/cursors/grabbing.svg') 16 16, grabbing;
+
+  --spinner: url('./assets/spinner.webp');
 }
 
 @layer base {
+  button:disabled,
+  label,
+  input:disabled {
+    cursor: var(--cursor-default);
+  }
+
   :is(
     input:not([type]),
     input[type="text"]
@@ -37,15 +47,29 @@
     cursor: var(--cursor-text);
   }
 
-  :is(
-    button,
-    [role="button"],
-    a
-  ):not(:disabled) {
+  button:not(:disabled),
+  [role="button"],
+  a {
     cursor: var(--cursor-pointer);
   }
 }
 
+@utility badge {
+  --s1: --spacing(1);
+  --s2: --spacing(2);
+
+  clip-path: polygon(
+    var(--s2) 0, calc(100% - var(--s2)) 0, calc(100% - var(--s2)) var(--s1),
+    calc(100% - var(--s1)) var(--s1), calc(100% - var(--s1)) var(--s2), 100% var(--s2),
+    100% calc(100% - var(--s2)), calc(100% - var(--s1)) calc(100% - var(--s2)),
+    calc(100% - var(--s1)) calc(100% - var(--s1)), calc(100% - var(--s2)) calc(100% - var(--s1)),
+    calc(100% - var(--s2)) 100%, var(--s2) 100%, var(--s2) calc(100% - var(--s1)),
+    var(--s1) calc(100% - var(--s1)), var(--s1) calc(100% - var(--s2)), 0 calc(100% - var(--s2)),
+    0 var(--s2), var(--s1) var(--s2), var(--s1) var(--s1), var(--s2) var(--s1)
+  );
+}
+
 :root {
   color-scheme: dark;
+  image-rendering: pixelated;
 }
