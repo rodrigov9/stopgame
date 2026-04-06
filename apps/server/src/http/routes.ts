@@ -1,7 +1,7 @@
 import { FastifyPluginCallbackZod } from 'fastify-type-provider-zod'
 
+import { roomRoutes } from './routes/roomRoutes.js'
+
 export const routes: FastifyPluginCallbackZod = app => {
-  app.get('/', (_req, reply) => {
-    reply.send({ hello: 'world' })
-  })
+  app.register(roomRoutes, { prefix: '/rooms' })
 }
