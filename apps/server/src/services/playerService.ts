@@ -1,5 +1,5 @@
 import { Player } from '@/models/Player.js'
-import { InvalidTokenError } from '@/errors/PlayerError.js'
+import { InvalidTokenError } from '@/errors/PlayerErrors.js'
 
 import { getRoom, deleteRoom } from './roomService.js'
 import { generateToken, verifyToken } from '@/utils/playerTokens.js'

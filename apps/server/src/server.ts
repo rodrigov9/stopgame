@@ -7,6 +7,8 @@ import {
 import { env } from './env.js'
 
 import { socketIO } from './plugins/socket-io.js'
+import { errorHandler } from './plugins/errorHandler.js'
+
 import { routes } from './http/routes.js'
 import { handlers } from './ws/handlers.js'
 
@@ -26,6 +28,7 @@ app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)
 
 app.register(socketIO)
+app.register(errorHandler)
 
 app.register(routes)
 app.register(handlers)
