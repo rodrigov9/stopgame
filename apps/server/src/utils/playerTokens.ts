@@ -3,18 +3,18 @@ import { env } from '@/env.js'
 
 import { InvalidTokenError } from '@/errors/PlayerErrors.js'
 
-type Payload = {
+export type TokenPayload = {
   roomCode: string
   playerId: string
 }
 
-export function generateToken(payload: Payload) {
+export function generateToken(payload: TokenPayload) {
   return jwt.sign(payload, env.JWT_SECRET)
 }
 
 export function verifyToken(token: string) {
   try {
-    return jwt.verify(token, env.JWT_SECRET) as Payload
+    return jwt.verify(token, env.JWT_SECRET) as TokenPayload
   } catch {
     throw new InvalidTokenError()
   }

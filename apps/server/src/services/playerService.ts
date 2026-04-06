@@ -24,19 +24,20 @@ export function getPlayer(roomCode: string, playerId: string) {
   return { player, room }
 }
 
-export function leaveRoom(roomCode: string, playerId: string) {
-  const { player, room } = getPlayer(roomCode, playerId)
-  room.leave(player.id)
-}
-
 export function connectPlayer(roomCode: string, playerId: string) {
   const { player } = getPlayer(roomCode, playerId)
   player.isConnected = true
 }
 
-export function disconnectPlayer(roomCode: string, playerId: string) {
+export function disconnectPlayer(
+  roomCode: string,
+  playerId: string,
+  leave = false
+) {
   const { player, room } = getPlayer(roomCode, playerId)
   player.isConnected = false
+
+  if (leave) room.leave(player.id)
 
   if (!room.hasConnectedPlayers) deleteRoom(room.code)
 }

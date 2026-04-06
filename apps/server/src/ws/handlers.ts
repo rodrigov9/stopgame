@@ -1,11 +1,12 @@
 import { FastifyPluginCallback } from 'fastify'
 
-export const handlers: FastifyPluginCallback = app => {
-  app.io.on('connection', socket => {
-    app.log.info(`Socket connected ${socket.id}`)
+import { authMiddleware } from './middlewares/authMiddleware.js'
+import { connectionHandlers } from './handlers/connectionHandlers.js'
 
-    socket.on('disconnect', reason => {
-      app.log.info(`Socket disconnected ${socket.id} (${reason})`)
-    })
+export const handlers: FastifyPluginCallback = app => {
+  app.io.use(authMiddleware)
+
+  app.io.on('connection', socket => {
+    connectionHandlers(socket)
   })
 }
