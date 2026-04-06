@@ -7,6 +7,7 @@ import { roomCodeSchema } from '@/schemas/roomCodeSchema.js'
 
 import { createRoom, getRoom } from '@/services/roomService.js'
 import { joinRoom } from '@/services/playerService.js'
+import { generateToken } from '@/utils/playerTokens.js'
 
 export const roomRoutes: FastifyPluginCallbackZod = app => {
   app.post(
@@ -23,7 +24,9 @@ export const roomRoutes: FastifyPluginCallbackZod = app => {
       const { options, profile } = req.body
 
       const { code } = createRoom(options)
-      const token = joinRoom(code, profile)
+      const player = joinRoom(code, profile)
+
+      const token = generateToken({ roomCode: code, playerId: player.id })
 
       return { roomCode: code, token }
     }
@@ -48,7 +51,7 @@ export const roomRoutes: FastifyPluginCallbackZod = app => {
         categories: room.categories,
         currentRound: room.currentRound,
         players: {
-          current: room.players.filter(p => p.socketId !== undefined).length,
+          current: room.players.length,
           max: room.maxPlayers
         }
       }
@@ -68,7 +71,9 @@ export const roomRoutes: FastifyPluginCallbackZod = app => {
     req => {
       const { code } = req.params
 
-      const token = joinRoom(code, req.body)
+      const player = joinRoom(code, req.body)
+      const token = generateToken({ roomCode: code, playerId: player.id })
+
       return { token }
     }
   )

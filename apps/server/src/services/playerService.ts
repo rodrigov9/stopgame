@@ -2,7 +2,6 @@ import { Player } from '@/models/Player.js'
 import { InvalidTokenError } from '@/errors/PlayerErrors.js'
 
 import { getRoom, deleteRoom } from './roomService.js'
-import { generateToken, verifyToken } from '@/utils/playerTokens.js'
 
 type JoinRoomProfileOptions = {
   name: string
@@ -14,28 +13,30 @@ export function joinRoom(code: string, profile: JoinRoomProfileOptions) {
   const player = new Player(profile.name, profile.avatar)
   room.join(player)
 
-  return generateToken({ roomCode: room.code, playerId: player.id })
+  return player
 }
 
-export function getPlayerFromToken(token: string) {
-  const payload = verifyToken(token)
-  if (!payload) throw new InvalidTokenError()
-
-  const room = getRoom(payload.roomCode)
-  const player = room.getPlayer(payload.playerId)
+export function getPlayer(roomCode: string, playerId: string) {
+  const room = getRoom(roomCode)
+  const player = room.getPlayer(playerId)
   if (!player) throw new InvalidTokenError()
 
   return { player, room }
 }
 
-export function connectPlayer(token: string, socketId: string) {
-  const { player } = getPlayerFromToken(token)
-  player.connect(socketId)
+export function leaveRoom(roomCode: string, playerId: string) {
+  const { player, room } = getPlayer(roomCode, playerId)
+  room.leave(player.id)
 }
 
-export function disconnectPlayer(token: string) {
-  const { player, room } = getPlayerFromToken(token)
-  player.disconnect()
+export function connectPlayer(roomCode: string, playerId: string) {
+  const { player } = getPlayer(roomCode, playerId)
+  player.isConnected = true
+}
+
+export function disconnectPlayer(roomCode: string, playerId: string) {
+  const { player, room } = getPlayer(roomCode, playerId)
+  player.isConnected = false
 
   if (!room.hasConnectedPlayers) deleteRoom(room.code)
 }
