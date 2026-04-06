@@ -4,10 +4,10 @@ import { processError } from '@/utils/processError.js'
 
 export const errorHandler = fp(
   async app => {
-    app.setErrorHandler((error, _req, reply) => {
+    app.setErrorHandler((error, req, reply) => {
       const { statusCode, message } = processError(error)
 
-      if (statusCode === 500) app.log.error(error)
+      if (statusCode === 500) req.log.error(error)
 
       return reply.status(statusCode).send({
         statusCode,
