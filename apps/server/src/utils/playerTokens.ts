@@ -1,12 +1,16 @@
 import jwt from 'jsonwebtoken'
+import * as z from 'zod'
 import { env } from '@/env.js'
 
+import { roomCodeSchema } from '@/schemas/roomCodeSchema.js'
 import { InvalidTokenError } from '@/errors/PlayerErrors.js'
 
-export type TokenPayload = {
-  roomCode: string
-  playerId: string
-}
+const tokenPayloadSchema = z.object({
+  roomCode: roomCodeSchema,
+  playerId: z.uuid()
+})
+
+export type TokenPayload = z.infer<typeof tokenPayloadSchema>
 
 export function generateToken(payload: TokenPayload) {
   return jwt.sign(payload, env.JWT_SECRET)
@@ -14,7 +18,8 @@ export function generateToken(payload: TokenPayload) {
 
 export function verifyToken(token: string) {
   try {
-    return jwt.verify(token, env.JWT_SECRET) as TokenPayload
+    const payload = jwt.verify(token, env.JWT_SECRET)
+    return tokenPayloadSchema.parse(payload)
   } catch {
     throw new InvalidTokenError()
   }
