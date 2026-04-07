@@ -12,4 +12,14 @@ export class Player {
     this.score = 0
     this.isConnected = false
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      avatar: this.avatar,
+      score: this.score,
+      isConnected: this.isConnected
+    }
+  }
 }

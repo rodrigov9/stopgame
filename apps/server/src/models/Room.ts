@@ -48,4 +48,17 @@ export class Room {
   leave(playerId: string) {
     this.players = this.players.filter(p => p.id !== playerId)
   }
+
+  toJSON(showPlayers = true) {
+    return {
+      code: this.code,
+      time: this.time,
+      categories: this.categories,
+      currentRound: this.currentRound,
+      player: {
+        current: showPlayers ? this.players : this.players.length,
+        max: this.maxPlayers
+      }
+    }
+  }
 }

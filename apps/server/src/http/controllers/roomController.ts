@@ -27,16 +27,7 @@ export function getRoom(req: FastifyRequest<GetRoomSchema>) {
   const { code } = req.params
   const room = roomService.getRoom(code)
 
-  return {
-    code: room.code,
-    time: room.time,
-    categories: room.categories,
-    currentRound: room.currentRound,
-    players: {
-      current: room.players.length,
-      max: room.maxPlayers
-    }
-  }
+  return room.toJSON(false)
 }
 
 export function joinRoom(req: FastifyRequest<JoinRoomSchema>) {
