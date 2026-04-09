@@ -1,12 +1,9 @@
 import { FastifySchema } from 'fastify'
 import * as z from 'zod'
+import { roomCodeSchema } from '@/utils/playerTokens.js'
 
 const roomParamsSchema = z.object({
-  code: z
-    .string()
-    .length(6)
-    .toUpperCase()
-    .regex(/^[A-Z0-9]+$/)
+  code: roomCodeSchema
 })
 
 export const getRoomSchema = {
