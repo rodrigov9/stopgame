@@ -1,8 +1,9 @@
-import { FastifyPluginCallback } from 'fastify'
+import { Server } from './types.js'
+
 import { appEmitter } from '@/events/appEmitter.js'
 import * as socketRooms from './socketRooms.js'
 
-export const emitters: FastifyPluginCallback = ({ io }) => {
+export function emitters(io: Server) {
   appEmitter
     .on('playerAdd', (roomCode, player) => {
       io.to(socketRooms.room(roomCode))

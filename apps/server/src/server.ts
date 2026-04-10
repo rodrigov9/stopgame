@@ -1,16 +1,8 @@
 import { fastify } from 'fastify'
-import {
-  ZodTypeProvider,
-  serializerCompiler,
-  validatorCompiler
-} from 'fastify-type-provider-zod'
 import { env } from './env.js'
 
-import { socketIO } from './plugins/socket-io.js'
-import { errorHandler } from './plugins/errorHandler.js'
-
-import { routes } from './http/routes.js'
-import { handlers } from './ws/handlers.js'
+import { http } from './http/register.js'
+import { websockets } from './ws/register.js'
 
 const app = fastify({
   logger: {
@@ -22,16 +14,10 @@ const app = fastify({
       }
     }
   }
-}).withTypeProvider<ZodTypeProvider>()
+})
 
-app.setValidatorCompiler(validatorCompiler)
-app.setSerializerCompiler(serializerCompiler)
-
-app.register(socketIO)
-app.register(errorHandler)
-
-app.register(routes)
-app.register(handlers)
+app.register(http)
+app.register(websockets)
 
 app.listen({ port: env.PORT, host: '0.0.0.0' }).catch(err => {
   app.log.error(err)

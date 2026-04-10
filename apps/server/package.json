@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "fastify": "^5.8.4",
-    "fastify-plugin": "^5.1.0",
     "fastify-type-provider-zod": "^6.1.0",
     "jsonwebtoken": "^9.0.3",
     "nanoid": "^5.1.7",

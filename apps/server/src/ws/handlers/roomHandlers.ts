@@ -1,5 +1,4 @@
-import { Socket } from '@/@types/socket-io.js'
-
+import { Socket } from '../types.js'
 import { toggleReady } from '@/services/playerService.js'
 
 export function roomHandlers(socket: Socket) {
