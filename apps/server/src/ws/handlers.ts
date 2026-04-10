@@ -1,10 +1,13 @@
 import { FastifyPluginCallback } from 'fastify'
+import { emitters } from './emitters.js'
 
 import { authMiddleware } from './middlewares/authMiddleware.js'
 import { connectionHandlers } from './handlers/connectionHandlers.js'
 import { roomHandlers } from './handlers/roomHandlers.js'
 
 export const handlers: FastifyPluginCallback = app => {
+  app.register(emitters)
+
   app.io.use(authMiddleware)
 
   app.io.on('connection', socket => {

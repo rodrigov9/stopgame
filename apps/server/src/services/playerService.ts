@@ -1,3 +1,4 @@
+import { appEmitter } from '@/events/appEmitter.js'
 import { Player } from '@/models/Player.js'
 import { InvalidTokenError } from '@/errors/PlayerErrors.js'
 
@@ -11,7 +12,9 @@ type JoinRoomProfileOptions = {
 export function joinRoom(code: string, profile: JoinRoomProfileOptions) {
   const room = getRoom(code)
   const player = new Player(profile.name, profile.avatar)
+
   room.join(player)
+  appEmitter.emit('playerAdd', room.code, player)
 
   return player
 }
@@ -27,6 +30,8 @@ export function getPlayer(roomCode: string, playerId: string) {
 export function connectPlayer(roomCode: string, playerId: string) {
   const { player } = getPlayer(roomCode, playerId)
   player.isConnected = true
+
+  appEmitter.emit('playerUpdate', roomCode, player)
 }
 
 export function disconnectPlayer(
@@ -37,9 +42,14 @@ export function disconnectPlayer(
   const { player, room } = getPlayer(roomCode, playerId)
   player.isConnected = false
 
-  if (leave) room.leave(player.id)
-
-  if (!room.hasConnectedPlayers) deleteRoom(room.code)
+  if (!room.hasConnectedPlayers) {
+    deleteRoom(room.code)
+  } else if (leave) {
+    room.leave(player.id)
+    appEmitter.emit('playerRemove', roomCode, player)
+  } else {
+    appEmitter.emit('playerUpdate', roomCode, player)
+  }
 }
 
 export function toggleReady(
@@ -49,6 +59,8 @@ export function toggleReady(
 ) {
   const { player, room } = getPlayer(roomCode, playerId)
   player.isReady = isReady
+
+  appEmitter.emit('playerUpdate', roomCode, player)
 
   if (room.canStart) room.startRound()
 }
