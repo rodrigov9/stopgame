@@ -1,4 +1,5 @@
 import { Player } from './Player.js'
+import { Round } from './Round.js'
 import { RoomFullError } from '@/errors/RoomErrors.js'
 
 export type RoomOptions = {
@@ -8,20 +9,20 @@ export type RoomOptions = {
 }
 
 export class Room {
-  public readonly code: string
-  public maxPlayers: number
-  public time: number | null
-  public categories: string[]
-  public currentRound: number
-  public players: Player[]
+  readonly code: string
+  maxPlayers: number
+  time: number | null
+  categories: string[]
+  players: Player[]
+  rounds: Round[]
 
   constructor(code: string, options: RoomOptions) {
     this.code = code
     this.maxPlayers = options.maxPlayers
     this.time = options.time
     this.categories = options.categories
-    this.currentRound = 0
     this.players = []
+    this.rounds = []
   }
 
   get isFull() {
@@ -49,14 +50,28 @@ export class Room {
     this.players = this.players.filter(p => p.id !== playerId)
   }
 
-  toJSON(showPlayers = true) {
+  get canStart() {
+    return this.players.length >= 2 && this.players.every(p => p.isReady)
+  }
+
+  get currentRound() {
+    if (this.rounds.length === 0) return undefined
+    return this.rounds[this.rounds.length - 1]
+  }
+
+  startRound() {
+    this.players.forEach(p => (p.isReady = false))
+    this.rounds.push(new Round())
+  }
+
+  toJSON() {
     return {
       code: this.code,
       time: this.time,
       categories: this.categories,
-      currentRound: this.currentRound,
-      player: {
-        current: showPlayers ? this.players : this.players.length,
+      currentRound: this.rounds.length,
+      players: {
+        current: this.players,
         max: this.maxPlayers
       }
     }

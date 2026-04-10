@@ -5,9 +5,17 @@ import {
 } from 'socket.io'
 import { TokenPayload } from '@/utils/playerTokens.js'
 
-type ClientToServerEvents = DefaultEventsMap
+import { Room } from '@/models/Room.js'
+import { Player } from '@/models/Player.js'
 
-type ServerToClientEvents = DefaultEventsMap
+type ClientToServerEvents = {
+  ready: (isReady: boolean) => void
+}
+
+type ServerToClientEvents = {
+  initialData: (room: ReturnType<typeof Room.prototype.toJSON>) => void
+  playersUpdate: (players: ReturnType<typeof Player.prototype.toJSON>[]) => void
+}
 
 type InterServerEvents = DefaultEventsMap
 

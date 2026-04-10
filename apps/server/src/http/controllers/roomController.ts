@@ -25,9 +25,15 @@ export function createRoom(
 
 export function getRoom(req: FastifyRequest<GetRoomSchema>) {
   const { code } = req.params
-  const room = roomService.getRoom(code)
+  const roomData = roomService.getRoom(code).toJSON()
 
-  return room.toJSON(false)
+  return {
+    ...roomData,
+    players: {
+      ...roomData.players,
+      current: roomData.players.current.length
+    }
+  }
 }
 
 export function joinRoom(req: FastifyRequest<JoinRoomSchema>) {

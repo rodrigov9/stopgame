@@ -1,9 +1,10 @@
 export class Player {
-  public readonly id: string
-  public name: string
-  public avatar: number
-  public score: number
-  public isConnected: boolean
+  readonly id: string
+  name: string
+  avatar: number
+  score: number
+  isConnected: boolean
+  isReady: boolean
 
   constructor(name: string, avatar: number) {
     this.id = crypto.randomUUID()
@@ -11,6 +12,7 @@ export class Player {
     this.avatar = avatar
     this.score = 0
     this.isConnected = false
+    this.isReady = false
   }
 
   toJSON() {
@@ -19,7 +21,8 @@ export class Player {
       name: this.name,
       avatar: this.avatar,
       score: this.score,
-      isConnected: this.isConnected
+      isConnected: this.isConnected,
+      isReady: this.isReady
     }
   }
 }

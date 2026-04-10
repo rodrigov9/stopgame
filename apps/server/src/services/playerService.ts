@@ -41,3 +41,14 @@ export function disconnectPlayer(
 
   if (!room.hasConnectedPlayers) deleteRoom(room.code)
 }
+
+export function toggleReady(
+  roomCode: string,
+  playerId: string,
+  isReady: boolean
+) {
+  const { player, room } = getPlayer(roomCode, playerId)
+  player.isReady = isReady
+
+  if (room.canStart) room.startRound()
+}
