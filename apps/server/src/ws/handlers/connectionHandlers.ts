@@ -1,4 +1,4 @@
-import { Socket } from '../types.js'
+import { Socket } from '../types/socketIO.js'
 import * as socketRooms from '../socketRooms.js'
 
 import { getRoom } from '@/services/roomService.js'

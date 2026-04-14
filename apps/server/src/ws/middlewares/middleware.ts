@@ -1,5 +1,5 @@
 import { ExtendedError } from 'socket.io'
-import { Socket } from '../types.js'
+import { Socket } from '../types/socketIO.js'
 
 import { processError } from '@/utils/processError.js'
 

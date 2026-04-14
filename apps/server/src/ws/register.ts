@@ -1,6 +1,6 @@
 import { FastifyPluginCallback } from 'fastify'
 import { Server } from 'socket.io'
-import { Server as AppServer } from './types.js'
+import { Server as AppServer } from './types/socketIO.js'
 
 import { handlers } from './handlers.js'
 import { emitters } from './emitters.js'

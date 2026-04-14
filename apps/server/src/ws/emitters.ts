@@ -1,4 +1,4 @@
-import { Server } from './types.js'
+import { Server } from './types/socketIO.js'
 
 import { appEmitter } from '@/events/appEmitter.js'
 import * as socketRooms from './socketRooms.js'

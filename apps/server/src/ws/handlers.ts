@@ -1,4 +1,4 @@
-import { Server } from './types.js'
+import { Server } from './types/socketIO.js'
 
 import { authMiddleware } from './middlewares/authMiddleware.js'
 import { connectionHandlers } from './handlers/connectionHandlers.js'
