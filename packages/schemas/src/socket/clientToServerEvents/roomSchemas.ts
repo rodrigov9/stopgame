@@ -1,5 +1,5 @@
 import * as z from 'zod'
-import { EventArgsWithAck } from '../handlers/handler.js'
+import { EventArgsWithAck } from '../acknowledgements.js'
 
 export const readySchema = {
   input: z.tuple([z.boolean()])

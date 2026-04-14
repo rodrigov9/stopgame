@@ -2,6 +2,8 @@ import { Player } from './Player.js'
 import { Round } from './Round.js'
 import { RoomFullError } from '@/errors/RoomErrors.js'
 
+import { RoomModel } from '@stopgame/schemas/room'
+
 export type RoomOptions = {
   maxPlayers: number
   time: number | null
@@ -64,7 +66,7 @@ export class Room {
     this.rounds.push(new Round())
   }
 
-  toJSON() {
+  toJSON(): RoomModel {
     return {
       code: this.code,
       time: this.time,

@@ -1,23 +1,11 @@
 import * as z from 'zod'
+import {
+  EventArgsWithAck,
+  EventCallback
+} from '@stopgame/schemas/socket/acknowledgements'
 import { processError } from '@/utils/processError.js'
 
 type MaybePromise<T> = T | Promise<T>
-
-type EventCallback<T> = (
-  response:
-    | ({
-        success: false
-      } & ReturnType<typeof processError>)
-    | {
-        success: true
-        data: T
-      }
-) => void
-
-export type EventArgsWithAck<I extends Array<unknown>, O = void> = [
-  ...I,
-  EventCallback<O>
-]
 
 export function socketEventHandler<
   I extends z.ZodTuple,

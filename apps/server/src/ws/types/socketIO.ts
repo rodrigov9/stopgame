@@ -4,8 +4,10 @@ import {
   Socket as DefaultSocket
 } from 'socket.io'
 
-import { ClientToServerEvents } from './clientToServerEvents.js'
-import { ServerToClientEvents } from './serverToClientEvents.js'
+import {
+  ClientToServerEvents,
+  ServerToClientEvents
+} from '@stopgame/schemas/socket'
 import { TokenPayload } from '@/utils/playerTokens.js'
 
 type InterServerEvents = DefaultEventsMap

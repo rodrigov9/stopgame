@@ -1,7 +1,8 @@
+import { ErrorResponse } from '@stopgame/schemas/error'
 import { STATUS_CODES } from 'node:http'
 import { ZodError } from 'zod'
 
-export function processError(error: unknown) {
+export function processError(error: unknown): ErrorResponse {
   let statusCode = 500
   let message = 'An unexpected error occurred'
 

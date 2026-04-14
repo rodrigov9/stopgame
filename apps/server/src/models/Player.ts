@@ -1,3 +1,5 @@
+import { PlayerModel } from '@stopgame/schemas/player'
+
 export class Player {
   readonly id: string
   name: string
@@ -15,7 +17,7 @@ export class Player {
     this.isReady = false
   }
 
-  toJSON() {
+  toJSON(): PlayerModel {
     return {
       id: this.id,
       name: this.name,

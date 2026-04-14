@@ -2,13 +2,8 @@ import jwt from 'jsonwebtoken'
 import * as z from 'zod'
 import { env } from '@/env.js'
 
+import { roomCodeSchema } from '@stopgame/schemas/room'
 import { InvalidTokenError } from '@/errors/PlayerErrors.js'
-
-export const roomCodeSchema = z
-  .string()
-  .length(6)
-  .toUpperCase()
-  .regex(/^[A-Z0-9]+$/)
 
 const tokenPayloadSchema = z.object({
   roomCode: roomCodeSchema,
