@@ -1,27 +1,29 @@
-import { BaseError } from '@/errors/BaseError.js'
-import { ValidationError } from '@/errors/ValidationError.js'
+import { STATUS_CODES } from 'node:http'
 import { ZodError } from 'zod'
 
 export function processError(error: unknown) {
-  if (error instanceof BaseError) return error
+  let statusCode = 500
+  let message = 'An unexpected error occurred'
 
   if (error instanceof ZodError) {
+    statusCode = 400
     const issue = error.issues[0]
-    const message = issue
+    message = issue
       ? `${issue.path.join('/')} ${issue.message}`
       : 'Validation error'
-
-    return new ValidationError(message)
+  } else if (
+    error instanceof Error &&
+    'statusCode' in error &&
+    typeof error.statusCode === 'number' &&
+    error.statusCode !== 500
+  ) {
+    statusCode = error.statusCode
+    message = error.message
   }
 
-  if (error instanceof Error) {
-    let statusCode: number | undefined
-
-    if ('statusCode' in error && typeof error.statusCode === 'number')
-      statusCode = error.statusCode
-
-    if (statusCode !== 500) return new BaseError(error.message, statusCode)
+  return {
+    statusCode,
+    error: STATUS_CODES[statusCode],
+    message
   }
-
-  return new BaseError('An unexpected error occurred')
 }

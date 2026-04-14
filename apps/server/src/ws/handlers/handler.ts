@@ -5,11 +5,9 @@ type MaybePromise<T> = T | Promise<T>
 
 type EventCallback<T> = (
   response:
-    | {
+    | ({
         success: false
-        message: string
-        statusCode: number
-      }
+      } & ReturnType<typeof processError>)
     | {
         success: true
         data: T
@@ -41,10 +39,12 @@ export function socketEventHandler<
       })
     } catch (error) {
       const processedError = processError(error)
+
+      if (processedError.statusCode === 500) console.error(error)
+
       callback({
         success: false,
-        message: processedError.message,
-        statusCode: processedError.statusCode
+        ...processedError
       })
     }
   }
