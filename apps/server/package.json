@@ -19,6 +19,7 @@
     "tsx": "^4.21.0"
   },
   "dependencies": {
+    "@fastify/cors": "^11.2.0",
     "@stopgame/schemas": "workspace:*",
     "fastify": "^5.8.4",
     "fastify-type-provider-zod": "^6.1.0",

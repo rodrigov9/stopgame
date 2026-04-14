@@ -4,6 +4,8 @@ import {
   serializerCompiler,
   validatorCompiler
 } from 'fastify-type-provider-zod'
+import cors from '@fastify/cors'
+import { corsConfig } from '@/utils/cors.js'
 
 import { routes } from './routes.js'
 import { errorHandler } from './errorHandler.js'
@@ -13,6 +15,8 @@ export const http: FastifyPluginCallback = fastify => {
 
   app.setValidatorCompiler(validatorCompiler)
   app.setSerializerCompiler(serializerCompiler)
+
+  fastify.register(cors, corsConfig)
 
   app.register(routes)
   app.setErrorHandler(errorHandler)
