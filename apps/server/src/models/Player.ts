@@ -6,8 +6,8 @@ export class Player {
   isConnected: boolean
   isReady: boolean
 
-  constructor(name: string, avatar: number) {
-    this.id = crypto.randomUUID()
+  constructor(id: string, name: string, avatar: number) {
+    this.id = id
     this.name = name
     this.avatar = avatar
     this.score = 0

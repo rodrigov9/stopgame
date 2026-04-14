@@ -11,7 +11,8 @@ type JoinRoomProfileOptions = {
 
 export function joinRoom(code: string, profile: JoinRoomProfileOptions) {
   const room = getRoom(code)
-  const player = new Player(profile.name, profile.avatar)
+  const id = crypto.randomUUID()
+  const player = new Player(id, profile.name, profile.avatar)
 
   room.join(player)
   appEmitter.emit('playerAdd', room.code, player)
