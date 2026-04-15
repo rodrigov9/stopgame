@@ -3,12 +3,12 @@ import { PlayerModel } from '@stopgame/schemas/player'
 export class Player {
   readonly id: string
   name: string
-  avatar: number
+  avatar: string
   score: number
   isConnected: boolean
   isReady: boolean
 
-  constructor(id: string, name: string, avatar: number) {
+  constructor(id: string, name: string, avatar: string) {
     this.id = id
     this.name = name
     this.avatar = avatar

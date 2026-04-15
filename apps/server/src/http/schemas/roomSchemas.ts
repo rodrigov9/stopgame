@@ -1,42 +1,54 @@
 import { FastifySchema } from 'fastify'
-import * as z from 'zod'
 
-import { roomCodeSchema, roomOptionsSchema } from '@stopgame/schemas/room'
-import { profileSchema } from '@stopgame/schemas/player'
-
-const roomParamsSchema = z.object({
-  code: roomCodeSchema
-})
+import {
+  roomParamsSchema,
+  RoomParams,
+  getRoomResponseSchema,
+  GetRoomResponse,
+  joinRoomBodySchema,
+  JoinRoomBody,
+  joinRoomResponseSchema,
+  JoinRoomResponse,
+  createRoomBodySchema,
+  CreateRoomBody,
+  createRoomResponseSchema,
+  CreateRoomResponse
+} from '@stopgame/schemas/http/room'
 
 export const getRoomSchema = {
-  params: roomParamsSchema
+  params: roomParamsSchema,
+  response: {
+    200: getRoomResponseSchema
+  }
 } satisfies FastifySchema
 
 export type GetRoomSchema = {
-  Params: z.infer<typeof roomParamsSchema>
+  Params: RoomParams
+  Reply: GetRoomResponse
 }
 
-const joinRoomBodySchema = profileSchema
-
 export const joinRoomSchema = {
+  params: roomParamsSchema,
   body: joinRoomBodySchema,
-  params: roomParamsSchema
+  response: {
+    200: joinRoomResponseSchema
+  }
 } satisfies FastifySchema
 
 export type JoinRoomSchema = {
-  Body: z.infer<typeof joinRoomBodySchema>
-  Params: z.infer<typeof roomParamsSchema>
+  Params: RoomParams
+  Body: JoinRoomBody
+  Reply: JoinRoomResponse
 }
 
-const createRoomBodySchema = z.object({
-  options: roomOptionsSchema,
-  profile: joinRoomBodySchema
-})
-
 export const createRoomSchema = {
-  body: createRoomBodySchema
+  body: createRoomBodySchema,
+  response: {
+    201: createRoomResponseSchema
+  }
 } satisfies FastifySchema
 
 export type CreateRoomSchema = {
-  Body: z.infer<typeof createRoomBodySchema>
+  Body: CreateRoomBody
+  Reply: CreateRoomResponse
 }

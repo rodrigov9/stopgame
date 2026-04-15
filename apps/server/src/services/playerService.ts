@@ -6,7 +6,7 @@ import { getRoom, deleteRoom } from './roomService.js'
 
 type JoinRoomProfileOptions = {
   name: string
-  avatar: number
+  avatar: string
 }
 
 export function joinRoom(code: string, profile: JoinRoomProfileOptions) {

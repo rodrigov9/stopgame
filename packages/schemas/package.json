@@ -28,6 +28,10 @@
     "./socket/clientToServer/*": {
       "default": "./dist/socket/clientToServerEvents/*Schemas.js",
       "types": "./src/socket/clientToServerEvents/*Schemas.ts"
+    },
+    "./http/*": {
+      "default": "./dist/http/*Schemas.js",
+      "types": "./src/http/*Schemas.ts"
     }
   },
   "dependencies": {
