@@ -16,6 +16,7 @@
     "@tanstack/react-form": "^1.28.5",
     "@tanstack/react-router": "^1.166.8",
     "@tanstack/react-router-devtools": "^1.166.7",
+    "axios": "^1.15.0",
     "clsx": "^2.1.1",
     "pixelarticons": "^2.0.2",
     "react": "^19.2.0",

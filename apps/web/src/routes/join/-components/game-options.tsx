@@ -6,12 +6,12 @@ import { Crown, Users, Flag, AlarmClock, ListBox } from 'pixelarticons/react'
 type GameOptionsProps = {
   game: {
     code: string
-    owner: string
     players: {
       max: number
       current: number
+      owner?: string
     }
-    round: number
+    currentRound: number
     time: number | null
     categories: string[]
   }
@@ -27,7 +27,7 @@ export function GameOptions({ game }: GameOptionsProps) {
       <div className="flex flex-col items-center">
         <Crown className="mb-0.5 size-6" />
         <span className="mb-2">Criado por</span>
-        <span className="text-sm">{game.owner}</span>
+        <span className="text-sm">{game.players.owner ?? 'Desconhecido'}</span>
       </div>
 
       <div className="flex flex-col items-center">
@@ -41,7 +41,7 @@ export function GameOptions({ game }: GameOptionsProps) {
       <div className="flex flex-col items-center">
         <Flag className="mb-0.5 size-6" />
         <span className="mb-2">Ronda atual</span>
-        <span className="text-sm">{game.round}</span>
+        <span className="text-sm">{game.currentRound}</span>
       </div>
 
       <div className="flex flex-col items-center">

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as NewIndexRouteImport } from './routes/new/index'
 import { Route as homeIndexRouteImport } from './routes/(home)/index'
 import { Route as JoinIdRouteImport } from './routes/join/$id'
+import { Route as PlayIdRouteRouteImport } from './routes/play.$id/route'
 
 const NewIndexRoute = NewIndexRouteImport.update({
   id: '/new/',
@@ -28,32 +29,41 @@ const JoinIdRoute = JoinIdRouteImport.update({
   path: '/join/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlayIdRouteRoute = PlayIdRouteRouteImport.update({
+  id: '/play/$id',
+  path: '/play/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/play/$id': typeof PlayIdRouteRoute
   '/join/$id': typeof JoinIdRoute
   '/': typeof homeIndexRoute
   '/new/': typeof NewIndexRoute
 }
 export interface FileRoutesByTo {
+  '/play/$id': typeof PlayIdRouteRoute
   '/join/$id': typeof JoinIdRoute
   '/': typeof homeIndexRoute
   '/new': typeof NewIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/play/$id': typeof PlayIdRouteRoute
   '/join/$id': typeof JoinIdRoute
   '/(home)/': typeof homeIndexRoute
   '/new/': typeof NewIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/join/$id' | '/' | '/new/'
+  fullPaths: '/play/$id' | '/join/$id' | '/' | '/new/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/join/$id' | '/' | '/new'
-  id: '__root__' | '/join/$id' | '/(home)/' | '/new/'
+  to: '/play/$id' | '/join/$id' | '/' | '/new'
+  id: '__root__' | '/play/$id' | '/join/$id' | '/(home)/' | '/new/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  PlayIdRouteRoute: typeof PlayIdRouteRoute
   JoinIdRoute: typeof JoinIdRoute
   homeIndexRoute: typeof homeIndexRoute
   NewIndexRoute: typeof NewIndexRoute
@@ -82,10 +92,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JoinIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/play/$id': {
+      id: '/play/$id'
+      path: '/play/$id'
+      fullPath: '/play/$id'
+      preLoaderRoute: typeof PlayIdRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  PlayIdRouteRoute: PlayIdRouteRoute,
   JoinIdRoute: JoinIdRoute,
   homeIndexRoute: homeIndexRoute,
   NewIndexRoute: NewIndexRoute,

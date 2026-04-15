@@ -6,7 +6,13 @@ export default function SubmitButton(props: ButtonProps) {
 
   return (
     <form.Subscribe selector={state => state.isSubmitting || !state.canSubmit}>
-      {disabled => <Button type="submit" disabled={disabled} {...props} />}
+      {disabled => (
+        <Button
+          type="submit"
+          {...props}
+          disabled={disabled || props.disabled}
+        />
+      )}
     </form.Subscribe>
   )
 }

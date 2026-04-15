@@ -16,6 +16,8 @@ export const Route = createFileRoute('/new/')({
 })
 
 function NewRoom() {
+  const navigate = Route.useNavigate()
+
   const form = useAppForm({
     ...formOpts,
     validators: {
@@ -28,9 +30,12 @@ function NewRoom() {
       if (value.currentStep < steps.length - 1)
         return formApi.setFieldValue('currentStep', prev => prev + 1)
 
-      await createRoom(value)
+      const code = await createRoom(value)
 
-      // TODO: redirect to the room page
+      await navigate({
+        to: '/play/$id',
+        params: { id: code }
+      })
     }
   })
 

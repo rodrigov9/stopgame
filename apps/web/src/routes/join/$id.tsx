@@ -1,6 +1,8 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, notFound } from '@tanstack/react-router'
 import { useAppForm } from '@/hooks/form'
 import { formOpts } from './-form-options'
+import { getRoom, joinRoom } from '@/lib/api/room'
+import { avatars } from '@/assets/avatars'
 
 import { Panel } from '@/components/panel'
 import { Separator } from '@/components/separator'
@@ -9,48 +11,43 @@ import { ProfileForm } from './-components/profile-form'
 import { GameOptions } from './-components/game-options'
 
 export const Route = createFileRoute('/join/$id')({
+  loader: async ({ params, abortController }) => {
+    try {
+      const room = await getRoom(params.id, {
+        signal: abortController.signal
+      })
+      return room
+    } catch {
+      throw notFound()
+    }
+  },
   component: RoomInvite
 })
 
 function RoomInvite() {
-  const { id } = Route.useParams()
+  const room = Route.useLoaderData()
+  const navigate = Route.useNavigate()
 
   const form = useAppForm({
     ...formOpts,
     onSubmit: async ({ value }) => {
-      await new Promise(resolve => setTimeout(resolve, 3000))
+      const { token } = await joinRoom(room.code, {
+        ...value,
+        avatar: avatars[value.avatar].slug
+      })
+      localStorage.setItem(`token_${room.code}`, token)
 
-      console.log(value)
-
-      // TODO: redirect to the room page
+      await navigate({
+        to: '/play/$id',
+        params: { id: room.code }
+      })
     }
   })
 
   return (
     <Panel className="w-4xl">
       <div className="grid items-center gap-6 md:grid-cols-[1fr_auto_1fr]">
-        <GameOptions
-          game={{
-            code: id,
-            owner: 'Rodrigo',
-            players: {
-              max: 10,
-              current: 1
-            },
-            round: 1,
-            time: null,
-            categories: [
-              'Nomes',
-              'Objetos',
-              'TPC',
-              'Comida',
-              'Animais',
-              'Marcas',
-              'Profissões',
-              'Famosos'
-            ]
-          }}
-        />
+        <GameOptions game={room} />
 
         <Separator orientation="vertical" className="not-md:hidden" />
         <Separator orientation="horizontal" className="md:hidden" />
@@ -59,7 +56,12 @@ function RoomInvite() {
       </div>
 
       <form.AppForm>
-        <form.SubmitButton form="profile-form">Entrar</form.SubmitButton>
+        <form.SubmitButton
+          form="profile-form"
+          disabled={room.players.current >= room.players.max}
+        >
+          Entrar
+        </form.SubmitButton>
       </form.AppForm>
     </Panel>
   )

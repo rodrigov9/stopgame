@@ -1,5 +1,9 @@
 import { useState, type SubmitEvent } from 'react'
-import { useNavigate } from '@tanstack/react-router'
+import {
+  useNavigate,
+  useRouter,
+  type NavigateOptions
+} from '@tanstack/react-router'
 
 import { Field } from '@base-ui/react'
 import { Input } from '@/components/input'
@@ -8,6 +12,7 @@ import { Spinner } from '@/components/spinner'
 import { ChevronRight2 } from 'pixelarticons/react'
 
 export function JoinForm() {
+  const router = useRouter()
   const navigate = useNavigate()
   const [code, setCode] = useState('')
   const [isPending, setIsPending] = useState(false)
@@ -19,20 +24,19 @@ export function JoinForm() {
     setIsPending(true)
     setIsInvalid(false)
 
-    try {
-      // TODO: Check if the room exists before navigating
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      if (code.length !== 6) throw new Error('Invalid code')
+    const page: NavigateOptions = {
+      to: '/join/$id',
+      params: {
+        id: code
+      }
+    }
 
-      navigate({
-        to: '/join/$id',
-        params: {
-          id: code
-        }
-      })
-    } catch {
+    const matches = await router.preloadRoute(page)
+
+    if (matches) {
+      navigate(page)
+    } else {
       setIsInvalid(true)
-    } finally {
       setIsPending(false)
     }
   }
@@ -56,7 +60,7 @@ export function JoinForm() {
             spellCheck={false}
           />
 
-          <Button type="submit" className="p-0">
+          <Button type="submit" className="p-0" disabled={isPending}>
             {isPending ? (
               <Spinner className="m-3 size-6" />
             ) : (
