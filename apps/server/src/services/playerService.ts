@@ -2,7 +2,11 @@ import { appEmitter } from '@/events/appEmitter.js'
 import { Player } from '@/models/Player.js'
 import { InvalidTokenError } from '@/errors/PlayerErrors.js'
 
-import { getRoom, deleteRoom } from './roomService.js'
+import {
+  getRoom,
+  scheduleRoomDeletion,
+  cancelRoomDeletion
+} from './roomService.js'
 
 type JoinRoomProfileOptions = {
   name: string
@@ -33,6 +37,7 @@ export function connectPlayer(roomCode: string, playerId: string) {
   player.isConnected = true
 
   appEmitter.emit('playerUpdate', roomCode, player)
+  cancelRoomDeletion(roomCode)
 }
 
 export function disconnectPlayer(
@@ -44,8 +49,10 @@ export function disconnectPlayer(
   player.isConnected = false
 
   if (!room.hasConnectedPlayers) {
-    deleteRoom(room.code)
-  } else if (leave) {
+    scheduleRoomDeletion(room.code)
+  }
+
+  if (leave) {
     room.leave(player.id)
     appEmitter.emit('playerRemove', roomCode, player)
   } else {
