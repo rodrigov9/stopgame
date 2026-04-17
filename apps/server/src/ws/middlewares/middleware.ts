@@ -1,6 +1,7 @@
 import { ExtendedError } from 'socket.io'
 import { Socket } from '../types/socketIO.js'
 
+import { BaseError } from '@/errors/BaseError.js'
 import { processError } from '@/utils/processError.js'
 
 export function middleware(fn: (socket: Socket) => unknown) {
@@ -9,7 +10,14 @@ export function middleware(fn: (socket: Socket) => unknown) {
       await fn(socket)
       next()
     } catch (error) {
-      next(processError(error))
+      const errorToSend: ExtendedError =
+        error instanceof BaseError
+          ? error
+          : new Error(processError(error).message)
+
+      errorToSend.data = errorToSend.name
+
+      next(errorToSend)
     }
   }
 }
