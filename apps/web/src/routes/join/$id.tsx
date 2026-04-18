@@ -1,4 +1,4 @@
-import { createFileRoute, notFound } from '@tanstack/react-router'
+import { createFileRoute, notFound, redirect } from '@tanstack/react-router'
 import { useAppForm } from '@/hooks/form'
 import { formOpts } from './-form-options'
 import { getRoom, joinRoom } from '@/lib/api/room'
@@ -11,6 +11,15 @@ import { ProfileForm } from './-components/profile-form'
 import { GameOptions } from './-components/game-options'
 
 export const Route = createFileRoute('/join/$id')({
+  beforeLoad: ({ params }) => {
+    const id = params.id.toUpperCase()
+    if (localStorage.getItem(`token_${id}`))
+      throw redirect({
+        to: '/play/$id',
+        params: { id },
+        replace: true
+      })
+  },
   loader: async ({ params, abortController }) => {
     try {
       const room = await getRoom(params.id, {
@@ -39,7 +48,8 @@ function RoomInvite() {
 
       await navigate({
         to: '/play/$id',
-        params: { id: room.code }
+        params: { id: room.code },
+        replace: true
       })
     }
   })
@@ -58,7 +68,7 @@ function RoomInvite() {
       <form.AppForm>
         <form.SubmitButton
           form="profile-form"
-          disabled={room.players.current >= room.players.max}
+          disabled={room.players >= room.maxPlayers}
         >
           Entrar
         </form.SubmitButton>

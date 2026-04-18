@@ -1,20 +1,11 @@
+import type { GetRoomResponse } from '@stopgame/schemas/http/room'
 import { formatTime } from '@/utils/format-time'
 
 import { Bullet } from '@/components/bullet'
 import { Crown, Users, Flag, AlarmClock, ListBox } from 'pixelarticons/react'
 
 type GameOptionsProps = {
-  game: {
-    code: string
-    players: {
-      max: number
-      current: number
-      owner?: string
-    }
-    currentRound: number
-    time: number | null
-    categories: string[]
-  }
+  game: GetRoomResponse
 }
 
 export function GameOptions({ game }: GameOptionsProps) {
@@ -27,14 +18,14 @@ export function GameOptions({ game }: GameOptionsProps) {
       <div className="flex flex-col items-center">
         <Crown className="mb-0.5 size-6" />
         <span className="mb-2">Criado por</span>
-        <span className="text-sm">{game.players.owner ?? 'Desconhecido'}</span>
+        <span className="text-sm">{game.owner ?? 'Desconhecido'}</span>
       </div>
 
       <div className="flex flex-col items-center">
         <Users className="mb-0.5 size-6" />
         <span className="mb-2">Jogadores</span>
         <span className="text-sm">
-          {game.players.current}/{game.players.max}
+          {game.players}/{game.maxPlayers}
         </span>
       </div>
 

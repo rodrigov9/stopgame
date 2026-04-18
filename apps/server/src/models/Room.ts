@@ -72,10 +72,8 @@ export class Room {
       time: this.time,
       categories: this.categories,
       currentRound: this.rounds.length,
-      players: {
-        current: this.players,
-        max: this.maxPlayers
-      }
+      players: this.players,
+      maxPlayers: this.maxPlayers
     }
   }
 }

@@ -24,8 +24,6 @@ export type RoomModel = {
   time: number | null
   categories: string[]
   currentRound: number
-  players: {
-    current: PlayerModel[]
-    max: number
-  }
+  players: PlayerModel[]
+  maxPlayers: number
 }

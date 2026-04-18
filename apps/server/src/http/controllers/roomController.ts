@@ -32,11 +32,8 @@ export function getRoom(
 
   reply.send({
     ...roomData,
-    players: {
-      ...roomData.players,
-      current: roomData.players.current.length,
-      owner: roomData.players.current[0]?.name
-    }
+    players: roomData.players.length,
+    owner: roomData.players[0]?.name
   })
 }
 

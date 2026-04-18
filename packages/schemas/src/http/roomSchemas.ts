@@ -12,12 +12,10 @@ export const getRoomResponseSchema = z.object({
   code: roomCodeSchema,
   time: z.number().nullable(),
   categories: z.array(z.string()),
+  maxPlayers: z.number(),
   currentRound: z.number(),
-  players: z.object({
-    current: z.number(),
-    owner: z.string().optional(),
-    max: z.int()
-  })
+  players: z.number(),
+  owner: z.string().optional()
 })
 
 export type GetRoomResponse = z.infer<typeof getRoomResponseSchema>
