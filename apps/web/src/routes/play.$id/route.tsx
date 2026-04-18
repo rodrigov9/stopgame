@@ -133,11 +133,8 @@ function Play() {
 
   return (
     <RoomContext value={{ isConnected, room, players }}>
-      <span>
-        connected to {room.code}
-        <br />
-        players: {players.map(p => p.name).join(', ')}
-      </span>
+      <span>connected to {room.code}</span>
+      <span>players: {players.map(p => p.name).join(', ')}</span>
       <Outlet />
     </RoomContext>
   )

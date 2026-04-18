@@ -10,7 +10,7 @@ import { Separator } from '@/components/separator'
 import { ProfileForm } from './-components/profile-form'
 import { GameOptions } from './-components/game-options'
 
-export const Route = createFileRoute('/join/$id')({
+export const Route = createFileRoute('/_app/join/$id')({
   beforeLoad: ({ params }) => {
     const id = params.id.toUpperCase()
     if (localStorage.getItem(`token_${id}`))

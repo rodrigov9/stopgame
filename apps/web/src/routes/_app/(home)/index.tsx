@@ -5,7 +5,7 @@ import { buttonVariants } from '@/components/button'
 import { JoinForm } from './-components/join-form'
 import { Plus } from 'pixelarticons/react'
 
-export const Route = createFileRoute('/(home)/')({
+export const Route = createFileRoute('/_app/(home)/')({
   component: Home
 })
 

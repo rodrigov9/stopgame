@@ -11,7 +11,7 @@ import { Button } from '@/components/button'
 import { Spinner } from '@/components/spinner'
 import { ChevronLeft, ChevronRight } from 'pixelarticons/react'
 
-export const Route = createFileRoute('/new/')({
+export const Route = createFileRoute('/_app/new/')({
   component: NewRoom
 })
 

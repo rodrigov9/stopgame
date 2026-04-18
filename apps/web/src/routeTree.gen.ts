@@ -9,24 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as NewIndexRouteImport } from './routes/new/index'
-import { Route as homeIndexRouteImport } from './routes/(home)/index'
-import { Route as JoinIdRouteImport } from './routes/join/$id'
+import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as PlayIdRouteRouteImport } from './routes/play.$id/route'
+import { Route as AppNewIndexRouteImport } from './routes/_app/new/index'
+import { Route as ApphomeIndexRouteImport } from './routes/_app/(home)/index'
+import { Route as AppJoinIdRouteImport } from './routes/_app/join/$id'
 
-const NewIndexRoute = NewIndexRouteImport.update({
-  id: '/new/',
-  path: '/new/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const homeIndexRoute = homeIndexRouteImport.update({
-  id: '/(home)/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JoinIdRoute = JoinIdRouteImport.update({
-  id: '/join/$id',
-  path: '/join/$id',
+const AppRouteRoute = AppRouteRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlayIdRouteRoute = PlayIdRouteRouteImport.update({
@@ -34,62 +24,68 @@ const PlayIdRouteRoute = PlayIdRouteRouteImport.update({
   path: '/play/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppNewIndexRoute = AppNewIndexRouteImport.update({
+  id: '/new/',
+  path: '/new/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const ApphomeIndexRoute = ApphomeIndexRouteImport.update({
+  id: '/(home)/',
+  path: '/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppJoinIdRoute = AppJoinIdRouteImport.update({
+  id: '/join/$id',
+  path: '/join/$id',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof ApphomeIndexRoute
   '/play/$id': typeof PlayIdRouteRoute
-  '/join/$id': typeof JoinIdRoute
-  '/': typeof homeIndexRoute
-  '/new/': typeof NewIndexRoute
+  '/join/$id': typeof AppJoinIdRoute
+  '/new/': typeof AppNewIndexRoute
 }
 export interface FileRoutesByTo {
   '/play/$id': typeof PlayIdRouteRoute
-  '/join/$id': typeof JoinIdRoute
-  '/': typeof homeIndexRoute
-  '/new': typeof NewIndexRoute
+  '/join/$id': typeof AppJoinIdRoute
+  '/': typeof ApphomeIndexRoute
+  '/new': typeof AppNewIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_app': typeof AppRouteRouteWithChildren
   '/play/$id': typeof PlayIdRouteRoute
-  '/join/$id': typeof JoinIdRoute
-  '/(home)/': typeof homeIndexRoute
-  '/new/': typeof NewIndexRoute
+  '/_app/join/$id': typeof AppJoinIdRoute
+  '/_app/(home)/': typeof ApphomeIndexRoute
+  '/_app/new/': typeof AppNewIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/play/$id' | '/join/$id' | '/' | '/new/'
+  fullPaths: '/' | '/play/$id' | '/join/$id' | '/new/'
   fileRoutesByTo: FileRoutesByTo
   to: '/play/$id' | '/join/$id' | '/' | '/new'
-  id: '__root__' | '/play/$id' | '/join/$id' | '/(home)/' | '/new/'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/play/$id'
+    | '/_app/join/$id'
+    | '/_app/(home)/'
+    | '/_app/new/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  AppRouteRoute: typeof AppRouteRouteWithChildren
   PlayIdRouteRoute: typeof PlayIdRouteRoute
-  JoinIdRoute: typeof JoinIdRoute
-  homeIndexRoute: typeof homeIndexRoute
-  NewIndexRoute: typeof NewIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/new/': {
-      id: '/new/'
-      path: '/new'
-      fullPath: '/new/'
-      preLoaderRoute: typeof NewIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(home)/': {
-      id: '/(home)/'
-      path: '/'
+    '/_app': {
+      id: '/_app'
+      path: ''
       fullPath: '/'
-      preLoaderRoute: typeof homeIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/join/$id': {
-      id: '/join/$id'
-      path: '/join/$id'
-      fullPath: '/join/$id'
-      preLoaderRoute: typeof JoinIdRouteImport
+      preLoaderRoute: typeof AppRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/play/$id': {
@@ -99,14 +95,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayIdRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/new/': {
+      id: '/_app/new/'
+      path: '/new'
+      fullPath: '/new/'
+      preLoaderRoute: typeof AppNewIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/(home)/': {
+      id: '/_app/(home)/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof ApphomeIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/join/$id': {
+      id: '/_app/join/$id'
+      path: '/join/$id'
+      fullPath: '/join/$id'
+      preLoaderRoute: typeof AppJoinIdRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
   }
 }
 
+interface AppRouteRouteChildren {
+  AppJoinIdRoute: typeof AppJoinIdRoute
+  ApphomeIndexRoute: typeof ApphomeIndexRoute
+  AppNewIndexRoute: typeof AppNewIndexRoute
+}
+
+const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppJoinIdRoute: AppJoinIdRoute,
+  ApphomeIndexRoute: ApphomeIndexRoute,
+  AppNewIndexRoute: AppNewIndexRoute,
+}
+
+const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
+  AppRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
+  AppRouteRoute: AppRouteRouteWithChildren,
   PlayIdRouteRoute: PlayIdRouteRoute,
-  JoinIdRoute: JoinIdRoute,
-  homeIndexRoute: homeIndexRoute,
-  NewIndexRoute: NewIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
