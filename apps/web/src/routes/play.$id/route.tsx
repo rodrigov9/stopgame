@@ -42,8 +42,9 @@ export const Route = createFileRoute('/play/$id')({
 
     socket.auth = { token }
   },
-  onLeave: () => {
+  onLeave: ({ params }) => {
     socket.disconnect()
+    localStorage.removeItem(`token_${params.id}`)
   }
 })
 
