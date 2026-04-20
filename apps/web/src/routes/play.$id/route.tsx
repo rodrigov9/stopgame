@@ -1,6 +1,7 @@
 import { useEffect, useEffectEvent, useState } from 'react'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { io, Socket } from 'socket.io-client'
+import { jwtDecode } from 'jwt-decode'
 import { env } from '@/env'
 
 import type {
@@ -8,7 +9,10 @@ import type {
   ClientToServerEvents
 } from '@stopgame/schemas/socket'
 import type { RoomModel } from '@stopgame/schemas/room'
-import type { PlayerModel } from '@stopgame/schemas/player'
+import {
+  type PlayerModel,
+  playerTokenPayloadSchema
+} from '@stopgame/schemas/player'
 import { RoomContext } from '@/contexts/room-context'
 
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
@@ -22,34 +26,31 @@ interface ExtendedError extends Error {
 
 export const Route = createFileRoute('/play/$id')({
   component: Play,
-  beforeLoad: ({ params }) => {
-    const uppercase = params.id.toUpperCase()
-    if (params.id !== uppercase)
-      throw redirect({
-        to: '/play/$id',
-        params: { id: uppercase },
-        replace: true
-      })
-  },
   loader: async ({ params }) => {
-    const token = localStorage.getItem(`token_${params.id}`)
-    if (!token)
+    try {
+      const token = localStorage.getItem(`token_${params.id.toUpperCase()}`)
+      if (!token) throw new Error()
+
+      const payload = playerTokenPayloadSchema.parse(jwtDecode(token))
+
+      socket.auth = { token }
+      return payload
+    } catch {
       throw redirect({
         to: '/join/$id',
         params,
         replace: true
       })
-
-    socket.auth = { token }
+    }
   },
   onLeave: ({ params }) => {
     socket.disconnect()
-    localStorage.removeItem(`token_${params.id}`)
+    localStorage.removeItem(`token_${params.id.toUpperCase()}`)
   }
 })
 
 function Play() {
-  const params = Route.useParams()
+  const { roomCode, playerId } = Route.useLoaderData()
   const navigate = Route.useNavigate()
 
   const [isConnected, setIsConnected] = useState(false)
@@ -65,10 +66,10 @@ function Play() {
         })
         break
       case 'InvalidTokenError':
-        localStorage.removeItem(`token_${params.id}`)
+        localStorage.removeItem(`token_${roomCode}`)
         navigate({
           to: '/join/$id',
-          params,
+          params: params => params,
           replace: true
         })
         break
@@ -134,7 +135,9 @@ function Play() {
 
   return (
     <RoomContext value={{ isConnected, room, players }}>
-      <span>connected to {room.code}</span>
+      <span>
+        connected to {room.code} as {players.find(p => p.id === playerId)?.name}
+      </span>
       <span>players: {players.map(p => p.name).join(', ')}</span>
       <Outlet />
     </RoomContext>
