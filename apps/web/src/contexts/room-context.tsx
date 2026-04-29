@@ -4,7 +4,7 @@ import type { PlayerModel } from '@stopgame/schemas/player'
 
 type RoomContextData = {
   isConnected: boolean
-  room: Omit<RoomModel, 'players'> | null
+  room: Omit<RoomModel, 'players'>
   players: PlayerModel[]
 }
 
